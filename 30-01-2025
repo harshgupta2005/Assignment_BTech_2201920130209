@@ -1,0 +1,286 @@
+# README - DSA, OOP, and DBMS Problems(30/01/2025)
+
+## 1. DSA Question: *3. Longest Substring Without Repeating Characters*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Given a string s, find the length of the longest 
+substring
+ without repeating characters.
+
+ 
+
+Example 1:
+
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+Example 2:
+
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+Example 3:
+
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+ 
+
+Constraints:
+
+0 <= s.length <= 5 * 104
+s consists of English letters, digits, symbols and spaces.
+
+### Solution Code
+#### C++ Implementation:
+cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<bool>ans(256,0);
+        int i=0;
+        int j=0;
+        int len=0;
+        while(j<s.size()){
+            while(ans[s[j]]){
+               ans[s[i]] =0;
+                i++;
+            }
+            ans[s[j]]=1;
+            len=max(len,j-i+1);
+                j++;
+        }
+
+   return len; }
+};
+
+---
+
+## 2. DSA Question: *6. Zigzag Conversion*
+
+*Platform:* LeetCode
+
+### Problem Statement
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+
+P   A   H   N
+A P L S I I G
+Y   I   R
+And then read line by line: "PAHNAPLSIIGYIR"
+
+Write the code that will take a string and make this conversion given a number of rows:
+
+string convert(string s, int numRows);
+ 
+
+Example 1:
+
+Input: s = "PAYPALISHIRING", numRows = 3
+Output: "PAHNAPLSIIGYIR"
+Example 2:
+
+Input: s = "PAYPALISHIRING", numRows = 4
+Output: "PINALSIGYAHRPI"
+Explanation:
+P     I    N
+A   L S  I G
+Y A   H R
+P     I
+Example 3:
+
+Input: s = "A", numRows = 1
+Output: "A"
+ 
+### Solution Code
+#### C++ Implementation:
+cpp
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        vector<string>ans(numRows);
+        bool flag=false;
+        int i=0;
+        if(numRows==1)return s;
+        for(int ch=0;ch<s.size();ch++){
+            ans[i]+=s[ch];
+            if(i==0||i==numRows-1){
+                flag=!flag;
+            }
+            if(flag==1){
+                i++;
+            }
+            else{
+                i--;
+            }
+        }
+        string s1="";
+        for(int i=0;i<numRows;i++){
+            s1+=ans[i];
+        }
+    return s1;}
+};
+---
+## 3. DSA Question: *11. Container With Most Water*
+
+*Platform:* LeetCode
+
+### Problem Statement
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+Notice that you may not slant the container.
+
+ 
+
+Example 1:
+
+
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+Example 2:
+
+Input: height = [1,1]
+Output: 1
+ 
+
+Constraints:
+
+n == height.length
+2 <= n <= 105
+0 <= height[i] <= 104
+
+### Solution Code
+#### C++ Implementation:
+cpp
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int n = height.size()-1;
+        int i=0, j=n;
+        int ans=0;
+        while(i <= j){
+            int area=0;
+            int ht = min(height[i], height[j]);
+            area = (j-i)*ht;
+            ans = max(ans, area);
+            if(height[i] > height[j]) j--;
+            else i++;
+        }
+
+        return ans;
+    }
+};
+
+---
+
+## DBMS Question: *182. Duplicate Emails*
+
+*Platform:* LeetCode
+
+### Problem Statement
+SQL Schema
+Pandas Schema
+Table: Person
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| email       | varchar |
++-------------+---------+
+id is the primary key (column with unique values) for this table.
+Each row of this table contains an email. The emails will not contain uppercase letters.
+ 
+
+Write a solution to report all the duplicate emails. Note that it's guaranteed that the email field is not NULL.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Person table:
++----+---------+
+| id | email   |
++----+---------+
+| 1  | a@b.com |
+| 2  | c@d.com |
+| 3  | a@b.com |
++----+---------+
+Output: 
++---------+
+| Email   |
++---------+
+| a@b.com |
++---------+
+Explanation: a@b.com is repeated two times.
+
+ 
+
+### Solution Code
+sql
+order by rating desc;
+# Write your MySQL query statement below
+SELECT email
+ FROM Person 
+GROUP BY email
+having count(email)>1;
+
+
+## OOPS Question: Implement Circle
+
+*Platform:* w3resource
+
+### Problem Statement
+Create a class Employee with attributes name, id, and salary. Implement methods to set the details, increase the salary by a given percentage, and display the employee details.### Example
+
+### Solution Code
+cpp
+#include <iostream>
+using namespace std;
+
+class Employee {
+private:
+    string name;
+    int id;
+    double salary;
+
+public:
+    void setDetails(string n, int i, double s) {
+        name = n;
+        id = i;
+        salary = s;
+    }
+
+    void increaseSalary(double percent) {
+        salary += salary * (percent / 100);
+    }
+
+    void displayDetails() {
+        cout << "Name: " << name << endl;
+        cout << "ID: " << id << endl;
+        cout << "Salary: " << salary << endl;
+    }
+};
+
+int main() {
+    Employee emp;
+    emp.setDetails("John Doe", 101, 50000);
+    emp.increaseSalary(10);
+    emp.displayDetails();
+    return 0;
+}
+
+
+---
