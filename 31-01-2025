@@ -1,0 +1,300 @@
+# README - DSA, OOP, and DBMS Problems(31/01/2025)
+
+## 1. DSA Question: *14. Longest Common Prefix*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string "".
+
+Example 1:
+
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+Example 2:
+
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+ 
+
+Constraints:
+
+1 <= strs.length <= 200
+0 <= strs[i].length <= 200
+strs[i] consists of only lowercase English letters if it is non-empty.
+
+### Solution Code
+#### C++ Implementation:
+cpp
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+     string ans="";
+     sort(strs.begin(),strs.end());
+     string i=strs[0];
+    string j=strs[strs.size()-1];
+    int n=min(i.size(),j.size());
+    for(int x=0;x<n;x++){
+        if(i[x]==j[x]){
+            ans.push_back(i[x]);
+        }
+        else{
+            break;
+        }
+          }
+  return ans;  }
+};
+---
+
+## 2. DSA Question: *15. 3Sum*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+ 
+
+Example 1:
+
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+Explanation: 
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+The distinct triplets are [-1,0,1] and [-1,-1,2].
+Notice that the order of the output and the order of the triplets does not matter.
+Example 2:
+
+Input: nums = [0,1,1]
+Output: []
+Explanation: The only possible triplet does not sum up to 0.
+Example 3:
+
+Input: nums = [0,0,0]
+Output: [[0,0,0]]
+Explanation: The only possible triplet sums up to 0.
+ 
+
+Constraints:
+
+3 <= nums.length <= 3000
+-105 <= nums[i] <= 105
+ 
+### Solution Code
+#### C++ Implementation:
+cpp
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        vector<vector<int>>ans;
+        for(int i=0;i<nums.size();i++){
+            if(i>0&&nums[i]==nums[i-1])continue;
+            int j=i+1;
+            int k=nums.size()-1;
+            while(j<k){
+            if(nums[i]+nums[k]+nums[j]<0){
+                j++;
+            }
+            else if(nums[i]+nums[k]+nums[j]>0){
+                k--;
+            }else if(nums[i]+nums[k]+nums[j]==0){
+              vector<int>temp=(ioponums[i],nums[j],nums[k]};
+              ans.push_back(temp);
+                j++;
+                k--;
+                while(j<k&&nums[k]==nums[k+1])k--;
+                while(j<k&&nums[j]==nums[j-1])j++;
+                
+          
+            }
+
+        }
+        
+        }
+    return ans;}
+};
+---
+## 3. DSA Question: *26. Remove Duplicates from Sorted Array*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums.
+
+Consider the number of unique elements of nums to be k, to get accepted, you need to do the following things:
+
+Change the array nums such that the first k elements of nums contain the unique elements in the order they were present in nums initially. The remaining elements of nums are not important as well as the size of nums.
+Return k.
+Custom Judge:
+
+The judge will test your solution with the following code:
+
+int[] nums = [...]; // Input array
+int[] expectedNums = [...]; // The expected answer with correct length
+
+int k = removeDuplicates(nums); // Calls your implementation
+
+assert k == expectedNums.length;
+for (int i = 0; i < k; i++) {
+    assert nums[i] == expectedNums[i];
+}
+If all assertions pass, then your solution will be accepted.
+
+ 
+
+Example 1:
+
+Input: nums = [1,1,2]
+Output: 2, nums = [1,2,_]
+Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+Example 2:
+
+Input: nums = [0,0,1,1,1,2,2,3,3,4]
+Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+
+### Solution Code
+#### C++ Implementation:
+cpp
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int i=0;
+        for(int j=1;j<nums.size();j++){
+            if(nums[j]!=nums[i]){
+                nums[i+1]=nums[j];
+                i++;
+            }
+        }
+   return i+1; }
+};  }
+};
+
+---
+
+## DBMS Question: *596. Classes More Than 5 Students*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Table: Courses
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| student     | varchar |
+| class       | varchar |
++-------------+---------+
+(student, class) is the primary key (combination of columns with unique values) for this table.
+Each row of this table indicates the name of a student and the class in which they are enrolled.
+ 
+
+Write a solution to find all the classes that have at least five students.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Courses table:
++---------+----------+
+| student | class    |
++---------+----------+
+| A       | Math     |
+| B       | English  |
+| C       | Math     |
+| D       | Biology  |
+| E       | Math     |
+| F       | Computer |
+| G       | Math     |
+| H       | Math     |
+| I       | Math     |
++---------+----------+
+Output: 
++---------+
+| class   |
++---------+
+| Math    |
++---------+
+Explanation: 
+- Math has 6 students, so we include it.
+- English has 1 student, so we do not include it.
+- Biology has 1 student, so we do not include it.
+- Computer has 1 student, so we do not include it.
+
+ 
+
+### Solution Code
+sql
+order by rating desc;
+# Write your MySQL query statement below# Write your MySQL query statement below
+SELECT class
+from Courses
+group by class
+having count(class)>=5;
+
+
+
+## OOPS Question: Implement Circle
+
+*Platform:* w3resource
+
+### Problem Statement
+Create a class Shape with a method area(). Derive two classes, Circle and Rectangle, from Shape. Implement the area() method in both derived classes to calculate the area of a circle and a rectangle, respectively.
+### Solution Code
+cpp
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Shape {
+public:
+    virtual double area() = 0;
+};
+
+class Circle : public Shape {
+private:
+    double radius;
+public:
+    Circle(double r) { radius = r; }
+    double area() { return M_PI * radius * radius; }
+};
+
+class Rectangle : public Shape {
+private:
+    double length, width;
+public:
+    Rectangle(double l, double w) { length = l; width = w; }
+    double area() { return length * width; }
+};
+
+int main() {
+    Shape* s1 = new Circle(5);
+    Shape* s2 = new Rectangle(4, 6);
+
+    cout << "Circle Area: " << s1->area() << endl;
+    cout << "Rectangle Area: " << s2->area() << endl;
+
+    delete s1;
+    delete s2;
+    return 0;
+}
+
+
+
+---
