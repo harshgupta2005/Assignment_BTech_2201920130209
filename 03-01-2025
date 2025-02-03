@@ -1,0 +1,337 @@
+
+# README - DSA, OOP, and DBMS Problems(03/02/2025)
+
+## 1. DSA Question: *206. Reverse Linked List*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+Example 2:
+
+
+Input: head = [1,2]
+Output: [2,1]
+Example 3:
+
+Input: head = []
+Output: []
+ 
+
+Constraints:
+
+The number of nodes in the list is the range [0, 5000].
+-5000 <= Node.val <= 5000
+ 
+
+Follow up: A linked list can be reversed either iteratively or recursively. Could you implement both?
+
+### Solution Code
+#### C++ Implementation:
+cpp/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode*prev=NULL;
+        ListNode* temp=head;
+        
+        while(temp!=NULL){
+            ListNode* forw=temp->next;
+            temp->next=prev;
+            prev=temp;
+            temp=forw;
+        }
+  return prev;  }
+};
+---
+
+## 2. DSA Question: *19. Remove Nth Node From End of List*
+Platform:* LeetCode
+
+### Problem Statement
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+Example 2:
+
+Input: head = [1], n = 1
+Output: []
+Example 3:
+
+Input: head = [1,2], n = 1
+Output: [1]
+ 
+
+Constraints:
+
+The number of nodes in the list is sz.
+1 <= sz <= 30
+0 <= Node.val <= 100
+1 <= n <= sz
+ 
+### Solution Code
+#### C++ Implementation:
+cpp
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        
+        ListNode* temp=head;
+        int size=0;
+        while(temp!=NULL){
+            size++;
+            temp=temp->next;
+        }
+        if(size==n){
+            ListNode* newhead=head->next;
+            delete(head);
+            return newhead;
+        }
+        int ans=size-n;
+        int res=0;
+           temp=head;
+        ListNode* prev;
+        while(temp!=NULL){
+            res++;
+
+            if(res==ans){
+                ListNode* delnode=temp->next;
+                temp->next=temp->next->next;
+                    delete(delnode);
+                break;
+            }
+            prev=temp;
+            temp=temp->next;
+        }
+
+   return head; }
+};
+
+---
+
+## 3. DSA Question: *Sort a linked list of 0s, 1s and 2s*
+
+*Platform:*GFG*
+
+### Problem Statement
+Given a linked list where nodes can contain values 0s, 1s, and 2s only. The task is to segregate 0s, 1s, and 2s linked list such that all zeros segregate to the head side, 2s at the end of the linked list, and 1s in the middle of 0s and 2s.
+
+Examples:
+
+Input: LinkedList: 1->2->2->1->2->0->2->2
+Output: 0->1->1->2->2->2->2->2
+Explanation: All the 0s are segregated to the left end of the linked list, 2s to the right end of the list, and 1s in between.
+ 
+Input: LinkedList: 2->2->0->1
+Output: 0->1->2->2
+Explanation: After arranging all the 0s,1s and 2s in the given format, the output will be 0 1 2 2.
+
+Expected Time Complexity: O(n).
+Expected Auxiliary Space: O(n).
+
+Constraints:
+1 <= no. of nodes <= 106
+0 <= node->data <= 2
+
+### Solution Code
+#### C++ Implementation:
+class Solution {
+  public:
+    // Function to sort a linked list of 0s, 1s and 2s.
+    Node* segregate(Node* head) {
+
+        // Add code here
+        int cnt0=0;
+        int cnt1=0;
+        int cnt2=0;
+        Node* temp=head;
+        while(temp!=NULL){
+            if(temp->data==0)cnt0++;
+            else if(temp->data==1)cnt1++;
+            else cnt2++;
+            temp=temp->next;
+        }
+        Node*ptr=head;
+        while(ptr!=NULL){
+            if(cnt0){
+                ptr->data=0;
+                cnt0--;
+            }
+            else if(cnt1){
+                ptr->data=1;
+                cnt1--;
+            }
+            else{
+                ptr->data=2;
+                cnt2--;
+            }
+            ptr=ptr->next;
+        }
+        return head;
+    }
+};
+---
+
+## DBMS Question: *176. Second Highest Salary*
+
+*Platform:* LeetCode
+
+### Problem Statement
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| id          | int  |
+| salary      | int  |
++-------------+------+
+id is the primary key (column with unique values) for this table.
+Each row of this table contains information about the salary of an employee.
+ 
+
+Write a solution to find the second highest distinct salary from the Employee table. If there is no second highest salary, return null (return None in Pandas).
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Employee table:
++----+--------+
+| id | salary |
++----+--------+
+| 1  | 100    |
+| 2  | 200    |
+| 3  | 300    |
++----+--------+
+Output: 
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| 200                 |
++---------------------+
+Example 2:
+
+Input: 
+Employee table:
++----+--------+
+| id | salary |
++----+--------+
+| 1  | 100    |
++----+--------+
+Output: 
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| null                |
++---------------------+
+
+### Solution Code
+# Write your MySQL query statement below
+SELECT DISTINCT MAX(salary)AS SecondHighestSalary FROM Employee 
+WHERE salary < (SELECT MAX(salary) from Employee);
+
+
+
+## OOPS Question: 
+
+*Platform:* w3resource
+
+### Problem Statement
+Create a class Account with attributes accountNumber and balance. Derive two classes, SavingsAccount and CurrentAccount, from Account. Implement the withdraw() method in both derived classes, where:
+SavingsAccount ensures a minimum balance of ₹1000 after withdrawal.
+CurrentAccount allows overdraft up to ₹5000.
+cpp
+#include <iostream>
+using namespace std;
+
+class Account {
+protected:
+    int accountNumber;
+    double balance;
+
+public:
+    Account(int accNum, double bal) : accountNumber(accNum), balance(bal) {}
+
+    virtual void withdraw(double amount) = 0;
+
+    void displayBalance() {
+        cout << "Account Number: " << accountNumber << ", Balance: " << balance << endl;
+    }
+};
+
+class SavingsAccount : public Account {
+public:
+    SavingsAccount(int accNum, double bal) : Account(accNum, bal) {}
+
+    void withdraw(double amount) override {
+        if (balance - amount >= 1000)
+            balance -= amount;
+        else
+            cout << "Insufficient balance in Savings Account" << endl;
+    }
+};
+
+class CurrentAccount : public Account {
+public:
+    CurrentAccount(int accNum, double bal) : Account(accNum, bal) {}
+
+    void withdraw(double amount) override {
+        if (balance - amount >= -5000)
+            balance -= amount;
+        else
+            cout << "Overdraft limit exceeded in Current Account" << endl;
+    }
+};
+
+int main() {
+    SavingsAccount sa(101, 5000);
+    CurrentAccount ca(102, 2000);
+
+    sa.withdraw(4500);
+    ca.withdraw(6000);
+
+    sa.displayBalance();
+    ca.displayBalance();
+
+    return 0;
+}
+
+
+
+
+---
