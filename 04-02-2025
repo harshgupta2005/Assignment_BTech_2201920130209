@@ -1,0 +1,306 @@
+
+# README - DSA, OOP, and DBMS Problems(04/02/2025)
+
+## 1. DSA Question: *3159. Find Occurrences of an Element in an Array*
+
+*Platform:* LeetCode
+
+### Problem Statement
+You are given an integer array nums, an integer array queries, and an integer x.
+
+For each queries[i], you need to find the index of the queries[i]th occurrence of x in the nums array. If there are fewer than queries[i] occurrences of x, the answer should be -1 for that query.
+
+Return an integer array answer containing the answers to all queries.
+
+ 
+
+Example 1:
+
+Input: nums = [1,3,1,7], queries = [1,3,2,4], x = 1
+
+Output: [0,-1,2,-1]
+
+Explanation:
+
+For the 1st query, the first occurrence of 1 is at index 0.
+For the 2nd query, there are only two occurrences of 1 in nums, so the answer is -1.
+For the 3rd query, the second occurrence of 1 is at index 2.
+For the 4th query, there are only two occurrences of 1 in nums, so the answer is -1.
+Example 2:
+
+Input: nums = [1,2,3], queries = [10], x = 5
+
+Output: [-1]
+
+Explanation:
+
+For the 1st query, 5 doesn't exist in nums, so the answer is -1.
+ 
+
+Constraints:
+
+1 <= nums.length, queries.length <= 105
+1 <= queries[i] <= 105
+1 <= nums[i], x <= 104
+### Solution Code
+#### C++ Implementation:
+cpp/**
+ class Solution {
+public:
+    vector<int> occurrencesOfElement(vector<int>& nums, vector<int>& queries, int x) {
+        vector<int>inde;
+        vector<int>res;
+        int cnt=0;
+        for(int i=0;i<nums.size();i++){
+            if(x==nums[i]){
+                cnt++;
+                inde.push_back(i);
+            }
+        }
+        for(int i=0;i<queries.size();i++){
+            if(queries[i]<=inde.size()){
+                res.push_back(inde[queries[i]-1]);
+            }
+            else{
+                res.push_back(-1);
+            }
+        }
+return res;
+    }
+};
+---
+
+## 2. DSA Question: *539. Minimum Time Difference*
+Platform:*LeetCode*
+
+### Problem Statement
+Given a list of 24-hour clock time points in "HH:MM" format, return the minimum minutes difference between any two time-points in the list.
+Example 1:
+Input: timePoints = ["23:59","00:00"]
+Output: 1
+Example 2:
+
+Input: timePoints = ["00:00","23:59","00:00"]
+Output: 0
+ 
+
+Constraints:
+
+2 <= timePoints.length <= 2 * 104
+timePoints[i] is in the format "HH:MM".
+ 
+### Solution Code
+#### C++ Implementation:
+cpp
+
+class Solution {
+public:
+    int findMinDifference(vector<string>& timePoints) {
+        int mini=INT_MAX;
+        int n=timePoints.size();
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            string time=timePoints[i];
+            int hr=stoi(time.substr(0,2));
+            int min=stoi(time.substr(3,5));
+            ans.push_back(hr*60+min);
+        }
+            sort(ans.begin(),ans.end());
+            for(int i=1;i<ans.size();i++){
+                int diff=ans[i]-ans[i-1];
+                mini=min(diff,mini);
+            }
+            return min(mini,(24*60-ans[ans.size()-1])+ans[0]);
+
+    }
+};
+
+---
+
+## 3. DSA Question: *1749. Maximum Absolute Sum of Any Subarray*
+
+*Platform:*Leetcode*
+
+### Problem Statement
+You are given an integer array nums. The absolute sum of a subarray [numsl, numsl+1, ..., numsr-1, numsr] is abs(numsl + numsl+1 + ... + numsr-1 + numsr).
+
+Return the maximum absolute sum of any (possibly empty) subarray of nums.
+
+Note that abs(x) is defined as follows:
+
+If x is a negative integer, then abs(x) = -x.
+If x is a non-negative integer, then abs(x) = x.
+ 
+
+Example 1:
+
+Input: nums = [1,-3,2,3,-4]
+Output: 5
+Explanation: The subarray [2,3] has absolute sum = abs(2+3) = abs(5) = 5.
+Example 2:
+
+Input: nums = [2,-5,1,-4,3,-2]
+Output: 8
+Explanation: The subarray [-5,1,-4] has absolute sum = abs(-5+1-4) = abs(-8) = 8.
+ 
+
+Constraints:
+
+1 <= nums.length <= 105
+-104 <= nums[i] <= 104
+### Solution Code
+#### C++ Implementation:
+class Solution {
+public:
+    int maxAbsoluteSum(vector<int>& nums) {
+       int maxi=INT_MIN;
+       int mini=INT_MAX;
+       int sum1=0;
+       int sum2=0;
+       for(int i=0;i<nums.size();i++){
+        int ans=nums[i];
+        sum1+=ans;
+        maxi=max(maxi,sum1);
+        if(sum1<0)sum1=0;
+       } 
+       for(int i=0;i<nums.size();i++){
+        int ans=nums[i];
+        sum2+=ans;
+        mini=min(mini,sum2);
+        if(sum2>0)sum2=0;
+       }
+       return max(maxi,abs(mini));
+    }
+};
+---
+
+## DBMS Question: *183. Customers Who Never Order*
+
+*Platform:* LeetCode
+
+### Problem Statement
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
++-------------+---------+
+id is the primary key (column with unique values) for this table.
+Each row of this table indicates the ID and name of a customer.
+ 
+
+Table: Orders
+
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| id          | int  |
+| customerId  | int  |
++-------------+------+
+id is the primary key (column with unique values) for this table.
+customerId is a foreign key (reference columns) of the ID from the Customers table.
+Each row of this table indicates the ID of an order and the ID of the customer who ordered it.
+ 
+
+Write a solution to find all customers who never order anything.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Customers table:
++----+-------+
+| id | name  |
++----+-------+
+| 1  | Joe   |
+| 2  | Henry |
+| 3  | Sam   |
+| 4  | Max   |
++----+-------+
+Orders table:
++----+------------+
+| id | customerId |
++----+------------+
+| 1  | 3          |
+| 2  | 1          |
++----+------------+
+Output: 
++-----------+
+| Customers |
++-----------+
+| Henry     |
+| Max       |
++-----------+
+### Solution Code
+# Write your MySQL query statement below
+SELECT name AS Customers
+FROM Customers
+WHERE id NOT IN (
+    SELECT customerId 
+    FROM Orders
+);
+
+
+
+## OOPS Question: 
+
+*Platform:* w3resource
+
+### Problem Statement
+Create a class Shape with a pure virtual function area(). Derive two classes, Circle and Rectangle, from Shape. Implement the area() function in both derived classes:
+Circle should calculate the area as π × radius².
+Rectangle should calculate the area as length × breadth.
+Write a program to demonstrate polymorphism by calling the area() function using a base class pointer.Create a class Account with attributes accountNumber and balance. Derive two classes, SavingsAccount and CurrentAccount, from Account. Implement the withdraw() method in both derived classes, where:
+SavingsAccount ensures a minimum balance of ₹1000 after withdrawal.
+CurrentAccount allows overdraft up to ₹5000.
+cpp
+#include <iostream>
+using namespace std;
+
+class Shape {
+public:
+    virtual double area() = 0;
+};
+
+class Circle : public Shape {
+private:
+    double radius;
+public:
+    Circle(double r) : radius(r) {}
+    double area() override {
+        return 3.14159 * radius * radius;
+    }
+};
+
+class Rectangle : public Shape {
+private:
+    double length, breadth;
+public:
+    Rectangle(double l, double b) : length(l), breadth(b) {}
+    double area() override {
+        return length * breadth;
+    }
+};
+
+int main() {
+    Shape* s1 = new Circle(5);
+    Shape* s2 = new Rectangle(4, 6);
+
+    cout << "Circle Area: " << s1->area() << endl;
+    cout << "Rectangle Area: " << s2->area() << endl;
+
+    delete s1;
+    delete s2;
+    return 0;
+}
+
+
+
+
+
+---
