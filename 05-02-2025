@@ -1,0 +1,367 @@
+# README - DSA, OOP, and DBMS Problems(05/02/2025)
+
+## 1. DSA Question: *Add 1 to a Linked List Number*
+
+*Platform:* GFG*
+
+### Problem Statement
+You are given a linked list where each element in the list is a node and have an integer data. You need to add 1 to the number formed by concatinating all the list node numbers together and return the head of the modified linked list. 
+
+Note: The head represents the first element of the given array.
+
+Examples :
+
+Input: LinkedList: 4->5->6
+Output: 457
+
+Explanation: 4->5->6 represents 456 and when 1 is added it becomes 457. 
+Input: LinkedList: 1->2->3
+Output: 124
+ 
+Explanation:  1->2->3 represents 123 and when 1 is added it becomes 124. 
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(1)
+
+Constraints:
+1 <= len(list) <= 105
+0 <= list[i] <= 9
+### Solution Code
+#### C++ Implementation:
+cpp
+/*
+
+struct Node
+{
+    int data;
+    struct Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+class Solution {
+    public: Node* reverse(Node* head) {
+        Node*prev=NULL;
+        Node* temp=head;
+        
+        while(temp!=NULL){
+            Node* forw=temp->next;
+            temp->next=prev;
+            prev=temp;
+            temp=forw;
+        }
+  return prev; 
+   }
+  public:
+    Node* addOne(Node* head) {
+        // Your Code here
+        // return head of list after adding one
+        head=reverse(head);
+        Node*temp=head;
+        int carr=1;
+        while(temp){
+            temp->data=temp->data+carr;
+            if(temp->data<10){
+                carr=0;
+                break;
+            }
+            else {
+                temp->data=0;
+                carr=1;
+            }
+            temp=temp->next;
+        }
+        if(carr==1){
+            Node* newNode=new Node(1);
+            head=reverse(head);
+            newNode->next=head;
+            return newNode;
+        }
+            head=reverse(head);
+            return head;
+
+
+    }
+};   }
+};
+---
+
+## 2. DSA Question: *141. Linked List Cycle*
+
+*Platform:* LeetCode*
+
+### Problem Statement
+Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+Return true if there is a cycle in the linked list. Otherwise, return false.
+
+ 
+
+Example 1:
+
+
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
+Example 2:
+
+
+Input: head = [1,2], pos = 0
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 0th node.
+Example 3:
+
+
+Input: head = [1], pos = -1
+Output: false
+Explanation: There is no cycle in the linked list.
+ 
+
+Constraints:
+
+The number of the nodes in the list is in the range [0, 104].
+-105 <= Node.val <= 105
+pos is -1 or a valid index in the linked-list.
+### Solution Code
+#### C++ Implementation:
+cpp
+
+class Solution {
+public:
+  /**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        map<ListNode*,bool>mp;
+        ListNode*temp=head;
+        while(temp!=NULL){
+            if(mp[temp]==true){
+                return true;
+            }
+            mp[temp]=true;
+            temp=temp->next;
+        }
+    return false;}
+};
+---
+
+
+## 3. DSA Question: *160. Intersection of Two Linked Lists*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. If the two linked lists have no intersection at all, return null.
+
+For example, the following two linked lists begin to intersect at node c1:
+
+
+The test cases are generated such that there are no cycles anywhere in the entire linked structure.
+
+Note that the linked lists must retain their original structure after the function returns.
+
+Custom Judge:
+
+The inputs to the judge are given as follows (your program is not given these inputs):
+
+intersectVal - The value of the node where the intersection occurs. This is 0 if there is no intersected node.
+listA - The first linked list.
+listB - The second linked list.
+skipA - The number of nodes to skip ahead in listA (starting from the head) to get to the intersected node.
+skipB - The number of nodes to skip ahead in listB (starting from the head) to get to the intersected node.
+The judge will then create the linked structure based on these inputs and pass the two heads, headA and headB to your program. If you correctly return the intersected node, then your solution will be accepted.
+
+ 
+
+Example 1:
+
+
+Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+Output: Intersected at '8'
+Explanation: The intersected node's value is 8 (note that this must not be 0 if the two lists intersect).
+From the head of A, it reads as [4,1,8,4,5]. From the head of B, it reads as [5,6,1,8,4,5]. There are 2 nodes before the intersected node in A; There are 3 nodes before the intersected node in B.
+- Note that the intersected node's value is not 1 because the nodes with value 1 in A and B (2nd node in A and 3rd node in B) are different node references. In other words, they point to two different locations in memory, while the nodes with value 8 in A and B (3rd node in A and 4th node in B) point to the same location in memory.
+Example 2:
+
+
+Input: intersectVal = 2, listA = [1,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1
+Output: Intersected at '2'
+Explanation: The intersected node's value is 2 (note that this must not be 0 if the two lists intersect).
+From the head of A, it reads as [1,9,1,2,4]. From the head of B, it reads as [3,2,4]. There are 3 nodes before the intersected node in A; There are 1 node before the intersected node in B.
+Example 3:
+
+
+Input: intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2
+Output: No intersection
+Explanation: From the head of A, it reads as [2,6,4]. From the head of B, it reads as [1,5]. Since the two lists do not intersect, intersectVal must be 0, while skipA and skipB can be arbitrary values.
+Explanation: The two lists do not intersect, so return null.
+ 
+
+Constraints:
+
+The number of nodes of listA is in the m.
+The number of nodes of listB is in the n.
+1 <= m, n <= 3 * 104
+1 <= Node.val <= 105
+0 <= skipA <= m
+0 <= skipB <= n
+intersectVal is 0 if listA and listB do not intersect.
+intersectVal == listA[skipA] == listB[skipB] if listA and listB intersect.
+ 
+
+Follow up: Could you write a solution that runs in O(m + n) time and use only O(1) memory?
+
+### Solution Code
+#### C++ Implementation:
+c/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    ListNode*t1=headA;
+    ListNode*t2=headB;
+    if(headA==NULL||headB==NULL)return NULL;
+    while(t1!=t2){
+        t1=t1->next;
+        t2=t2->next;
+        if(t1==t2)return t1;
+        if(t1==NULL)t1=headB;
+        if(t2==NULL)t2=headA;
+    }    
+   return t1; }
+};
+
+---
+
+## DBMS Question: *1527. Patients With a Condition*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Table: Patients
+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| patient_id   | int     |
+| patient_name | varchar |
+| conditions   | varchar |
++--------------+---------+
+patient_id is the primary key (column with unique values) for this table.
+'conditions' contains 0 or more code separated by spaces. 
+This table contains information of the patients in the hospital.
+ 
+
+Write a solution to find the patient_id, patient_name, and conditions of the patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Patients table:
++------------+--------------+--------------+
+| patient_id | patient_name | conditions   |
++------------+--------------+--------------+
+| 1          | Daniel       | YFEV COUGH   |
+| 2          | Alice        |              |
+| 3          | Bob          | DIAB100 MYOP |
+| 4          | George       | ACNE DIAB100 |
+| 5          | Alain        | DIAB201      |
++------------+--------------+--------------+
+Output: 
++------------+--------------+--------------+
+| patient_id | patient_name | conditions   |
++------------+--------------+--------------+
+| 3          | Bob          | DIAB100 MYOP |
+| 4          | George       | ACNE DIAB100 | 
++------------+--------------+--------------+
+Explanation: Bob and George both have a condition that starts with DIAB1.
+
+ 
+
+### Solution Code
+# Write your MySQL query statement below
+SELECT *
+ FROM Patients
+ WHERE conditions LIKE '% DIAB1%' 
+ OR conditions LIKE'DIAB1%';
+ 
+
+---
+
+## OOPS Question: 
+
+*Platform:* w3resource
+
+### Problem Statement
+Create a class Employee with attributes name and salary. Derive two classes, Manager and Developer, from Employee. Implement a function displayDetails() in both derived classes to print:
+
+For Manager: "Manager: [Name], Salary: [Salary]"
+For Developer: "Developer: [Name], Salary: [Salary]cpp
+#include <iostream>
+using namespace std;
+
+class Employee {
+protected:
+    string name;
+    double salary;
+public:
+    Employee(string n, double s) : name(n), salary(s) {}
+    virtual void displayDetails() = 0;
+};
+
+class Manager : public Employee {
+public:
+    Manager(string n, double s) : Employee(n, s) {}
+    void displayDetails() override {
+        cout << "Manager: " << name << ", Salary: " << salary << endl;
+    }
+};
+
+class Developer : public Employee {
+public:
+    Developer(string n, double s) : Employee(n, s) {}
+    void displayDetails() override {
+        cout << "Developer: " << name << ", Salary: " << salary << endl;
+    }
+};
+
+int main() {
+    Employee* emp1 = new Manager("Alice", 75000);
+    Employee* emp2 = new Developer("Bob", 60000);
+
+    emp1->displayDetails();
+    emp2->displayDetails();
+
+    delete emp1;
+    delete emp2;
+    return 0;
+}
+
+
+
+---
