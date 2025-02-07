@@ -1,0 +1,340 @@
+# README - DSA, OOP, and DBMS Problems(07/02/2025)
+
+## 1. DSA Question: *86. Partition List*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+
+You should preserve the original relative order of the nodes in each of the two partitions.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,4,3,2,5,2], x = 3
+Output: [1,2,2,4,3,5]
+Example 2:
+
+Input: head = [2,1], x = 2
+Output: [1,2]
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [0, 200].
+-100 <= Node.val <= 100
+-200 <= x <= 200
+### Solution Code
+#### C++ Implementation:
+cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    
+    ListNode* partition(ListNode* head, int x) {
+    if(!head)return head;
+        ListNode*smallhead=new ListNode(-1);
+        ListNode*largehead=new ListNode(-1);
+        ListNode*small=smallhead;
+        ListNode*large=largehead;
+        ListNode*temp=head;
+        while (temp){
+            if (temp->val<x){
+                small->next=temp;
+                small=small->next;
+            }
+            else{
+                large->next=temp;
+                large=large->next;
+            }
+            temp=temp->next;
+        }
+        large->next=NULL;
+        small->next=largehead->next;
+        delete(largehead);
+
+        return smallhead->next;
+    }
+};
+---
+
+## 2. DSA Question: *80. Remove Duplicates from Sorted Array II*
+
+*Platform:* LeetCode
+
+### Problem Statement
+Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
+
+Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+
+Return k after placing the final result in the first k slots of nums.
+
+Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
+
+Custom Judge:
+
+The judge will test your solution with the following code:
+
+int[] nums = [...]; // Input array
+int[] expectedNums = [...]; // The expected answer with correct length
+
+int k = removeDuplicates(nums); // Calls your implementation
+
+assert k == expectedNums.length;
+for (int i = 0; i < k; i++) {
+    assert nums[i] == expectedNums[i];
+}
+If all assertions pass, then your solution will be accepted.
+
+ 
+
+Example 1:
+
+Input: nums = [1,1,1,2,2,3]
+Output: 5, nums = [1,1,2,2,3,_]
+Explanation: Your function should return k = 5, with the first five elements of nums being 1, 1, 2, 2 and 3 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+Example 2:
+
+Input: nums = [0,0,1,1,1,1,2,3,3]
+Output: 7, nums = [0,0,1,1,2,3,3,_,_]
+Explanation: Your function should return k = 7, with the first seven elements of nums being 0, 0, 1, 1, 2, 3 and 3 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+ 
+
+Constraints:
+
+1 <= nums.length <= 3 * 104
+-104 <= nums[i] <= 104
+nums is sorted in non-decreasing order.
+ 
+### Solution Code
+#### C++ Implementation:
+cpp
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        unordered_map<int,int>mp;
+        vector<int>ans;
+        for(int i=0;i<nums.size();i++){
+            mp[nums[i]]++;
+        }
+        for(int i=0;i<nums.size();i++){
+            if(mp[nums[i]]>2){
+                ans.push_back(nums[i]);
+                ans.push_back(nums[i]);
+                mp[nums[i]]=0;
+            }
+            else if(mp[nums[i]]>0){
+                ans.push_back(nums[i]);
+            }
+        }
+        nums=ans;
+
+    return nums.size();}
+
+};
+## 3. DSA Question: *189. Rotate Array*
+
+*Platform:*LeetCode*
+
+### Problem Statement
+Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3,4,5,6,7], k = 3
+Output: [5,6,7,1,2,3,4]
+Explanation:
+rotate 1 steps to the right: [7,1,2,3,4,5,6]
+rotate 2 steps to the right: [6,7,1,2,3,4,5]
+rotate 3 steps to the right: [5,6,7,1,2,3,4]
+Example 2:
+
+Input: nums = [-1,-100,3,99], k = 2
+Output: [3,99,-1,-100]
+Explanation: 
+rotate 1 steps to the right: [99,-1,-100,3]
+rotate 2 steps to the right: [3,99,-1,-100]
+ 
+
+Constraints:
+
+1 <= nums.length <= 105
+-231 <= nums[i] <= 231 - 1
+0 <= k <= 105
+ 
+
+Follow up:
+
+Try to come up with as many solutions as you can. There are at least three different ways to solve this problem.
+Could you do it in-place with O(1) extra space?
+
+### Solution Code
+#### C++ Implementation:
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int n=nums.size();
+        vector<int>ans(n);
+        for(int i=0;i<n;i++){
+            ans[(i+k)%n]=nums[i];
+        }
+        nums=ans;
+    }
+};
+---
+
+## DBMS Question: *577. Employee Bonus*
+
+*Platform:* LeetCode*
+
+### Problem Statement
+Table: Employee
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| empId       | int     |
+| name        | varchar |
+| supervisor  | int     |
+| salary      | int     |
++-------------+---------+
+empId is the column with unique values for this table.
+Each row of this table indicates the name and the ID of an employee in addition to their salary and the id of their manager.
+ 
+
+Table: Bonus
+
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| empId       | int  |
+| bonus       | int  |
++-------------+------+
+empId is the column of unique values for this table.
+empId is a foreign key (reference column) to empId from the Employee table.
+Each row of this table contains the id of an employee and their respective bonus.
+ 
+
+Write a solution to report the name and bonus amount of each employee with a bonus less than 1000.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Employee table:
++-------+--------+------------+--------+
+| empId | name   | supervisor | salary |
++-------+--------+------------+--------+
+| 3     | Brad   | null       | 4000   |
+| 1     | John   | 3          | 1000   |
+| 2     | Dan    | 3          | 2000   |
+| 4     | Thomas | 3          | 4000   |
++-------+--------+------------+--------+
+Bonus table:
++-------+-------+
+| empId | bonus |
++-------+-------+
+| 2     | 500   |
+| 4     | 2000  |
++-------+-------+
+Output: 
++------+-------+
+| name | bonus |
++------+-------+
+| Brad | null  |
+| John | null  |
+| Dan  | 500   |
++------+-------+
+### Solution Code
+# Write your MySQL query statement below
+SELECT e.name,b.bonus
+FROM Employee AS e 
+LEFT JOIN Bonus AS b 
+ON e.empID = b.empID
+WHERE b.bonus < 1000 
+OR b.bonus IS NULL;
+
+---
+
+## OOPS Question: 
+
+*Platform:* w3resource*
+
+### Problem Statement
+Design a Bank Account class in C++ that supports the following operations:
+
+Deposit money
+Withdraw money (only if sufficient balance is available)
+Display account details
+Create an object of the class, perform multiple transactions, and display the final account balance.
+
+#include <iostream>
+using namespace std;
+
+class BankAccount {
+private:
+    string accountHolder;
+    double balance;
+
+public:
+    BankAccount(string name, double initialBalance) {
+        accountHolder = name;
+        balance = initialBalance;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+        cout << "Deposited: $" << amount << endl;
+    }
+
+    void withdraw(double amount) {
+        if (amount > balance) {
+            cout << "Insufficient balance!" << endl;
+        } else {
+            balance -= amount;
+            cout << "Withdrawn: $" << amount << endl;
+        }
+    }
+
+    void displayAccount() {
+        cout << "Account Holder: " << accountHolder << endl;
+        cout << "Balance: $" << balance << endl;
+    }
+};
+
+int main() {
+    BankAccount account("John Doe", 1000);
+
+    account.deposit(500);
+    account.withdraw(300);
+    account.withdraw(1500);  
+    account.displayAccount();
+
+    return 0;
+}
+
+
+
+
+---
